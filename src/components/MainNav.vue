@@ -6,7 +6,6 @@
                 <li><router-link to='/recipe'>Recipes</router-link></li>
             </ul>
         </nav>
-        <router-view></router-view>
     </div>
 </template>
 <script>
