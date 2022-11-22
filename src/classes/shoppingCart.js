@@ -5,7 +5,7 @@ export default class shoppingCart{
     constructor(cId){
         this.#cId = cId
     }
-    //The properties are made up, since the product class is not yet ready
+    //The properties are made up
     addToShoopingCart(product){
         //product is an object, as key we will use it's ID, and as value for the map we will use the entire instance of the object
         this.#shoppingList.set(product.pId, product)

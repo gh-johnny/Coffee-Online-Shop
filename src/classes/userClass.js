@@ -1,4 +1,4 @@
-export class userClass{
+export default class userClass{
     id;
     first_name;
     last_name;

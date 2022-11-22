@@ -20,16 +20,12 @@ export class productClass{
 
     totalCal(){
         let Price = 0;
-        if(this.type !== "Beverage"){
-            if(this.amount <= 4){
-                Price = this.price
-            }else if(this.amount > 4 && this.amount <=9){
-                Price = this.price * 0.95
-            }else if(this.amount > 9){
-                Price = this.price * 0.90
-            }
-        }else{
+        if(this.amount <= 4){
             Price = this.price
+        }else if(this.amount > 4 && this.amount <=9){
+            Price = this.price * 0.95
+        }else if(this.amount > 9){
+            Price = this.price * 0.90
         }
 
         let optionFee = 0
@@ -37,6 +33,7 @@ export class productClass{
         let bSizeFee = 0
         if(this.type == "Beverage"){
             optionFee = 0;
+            this.amount = 1;
             if(this.bType == "Esspresso"){
                 bTypeFee = 0
             }else if(this.bType == "Americano"){
@@ -58,6 +55,7 @@ export class productClass{
             }else if(this.bSize == "Very Large"){
                 bSizeFee = 2
             }
+
         }else if(this.type == "Whole beans"){
             optionFee = 0;
         }else if(this.type == "Gound"){
@@ -71,9 +69,5 @@ export class productClass{
         let Final = ((Price + optionFee + bTypeFee + bSizeFee) * this.amount).toFixed(2);
 
         return Final
-    }
-
-    eachPrice(){
-        return (this.totalCal() / this.amount).toFixed(2);
     }
 }
