@@ -54,10 +54,15 @@ export default {
         for(this.eachUser of this.userList){
           if(this.uname == this.eachUser[1].username && this.pword == this.eachUser[1].password){
             console.log(this.eachUser[1])
-            let logedUser = new userClass(this.eachUser[1].id, this.eachUser[1].first_name, this.eachUser[1].last_name, this.eachUser[1].username, this.eachUser[1].email)
-            logedUser.setSession()
+            let logedUser = new userClass(this.eachUser[1].id, this.eachUser[1].first_name, this.eachUser[1].last_name, this.eachUser[1].username, this.eachUser[1].email,this.eachUser[1].membership)
+            logedUser.setSession();
+            if(logedUser.membership){
+              let logeduser = logedUser.toObject();
+              logeduser.point = Math.floor(Math.random()*100000);
+              sessionStorage.setItem('logeduser',JSON.stringify(logeduser));
+            }
             this.$emit("userData", logedUser)
-            this.$router.push({name:'products-page'})
+            this.$router.push({name:'products-page'});
           }else{
             this.message = "Your Username or Password is wrong check again"
           }

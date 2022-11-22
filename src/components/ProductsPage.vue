@@ -1,6 +1,15 @@
 <template>
     <div class="productPage">
         <div class="PageDetails">
+            <article v-if="memberstat === !null">
+                <h2>Welcome {{this.fullName}}</h2>
+                <h3 v-show="memberstat">Membership: Gold Member |  Point: {{this.mempoint}}</h3>
+                <h3 v-show="!memberstat">Membership : None</h3>
+            </article>
+            <article v-if="memberstat === false">
+                <h2>Welcome {{this.fullName}}</h2>
+                <h3 v-show="!memberstat">Membership : None</h3>
+            </article>
             <h2>Products Page</h2>
             <button @click="goCart">Go to Cart</button>
             <div class="coffeePage">
@@ -34,6 +43,10 @@ export default {
             coffeeList: new Map(),
             getProduct:'',
             isModalVisible: false,
+            logedUser:JSON.parse(sessionStorage.getItem('logeduser')),
+            fullName:'',
+            memberstat: null,
+            mempoint:0
         }
     },
     methods:{
@@ -70,6 +83,11 @@ export default {
     },
     mounted(){
         this.loadJson();
+        if(sessionStorage.getItem('logeduser')){
+            this.fullName = this.logedUser.first_name+" "+this.logedUser.last_name;
+            this.memberstat = this.logedUser.membership;
+            this.mempoint = this.logedUser.point;
+        }
     }
 }
 </script>

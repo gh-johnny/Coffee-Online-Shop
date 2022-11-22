@@ -12,6 +12,7 @@ export default {
     data(){
         return{
             cartList:this.cartAdd,
+            logedUser:JSON.parse(sessionStorage.getItem('logeduser')),
         }
     },
     methods:{
@@ -20,6 +21,9 @@ export default {
         }
     },
     mounted(){
+        this.logedUser.point = 100;
+        console.log(this.logedUser);
+
         // console.log("hi luke");
         // console.log(this.cartList);
     }

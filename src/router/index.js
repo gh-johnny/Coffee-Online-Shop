@@ -11,8 +11,8 @@ const routes = [
         component: ProductsPage, 
     },
     {
-        path: '/',
-        alias: '/login',
+        path: '/login',
+        // alias: '/login',
         name: 'login-page', 
         component: loginPage, 
     },

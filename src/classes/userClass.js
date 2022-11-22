@@ -4,12 +4,14 @@ export class userClass{
     last_name;
     username;
     email;
-    constructor(id, first_name, last_name, username, email){
+    membership;
+    constructor(id, first_name, last_name, username, email,member){
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.username = username;
         this.email = email;
+        this.membership = member;
     }
 
     toObject(){
@@ -18,7 +20,8 @@ export class userClass{
             first_name:this.first_name,
             last_name:this.last_name,
             username:this.username,
-            email:this.email
+            email:this.email,
+            membership:this.membership
         }
     }
 
