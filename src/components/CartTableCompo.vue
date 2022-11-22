@@ -22,7 +22,7 @@
                     <td>{{coffee[1].bType}}</td>
                     <td>{{coffee[1].price}}</td>
                     <td>{{coffee[1].amount}}</td>
-                    <td>{{coffee[1].price * coffee[1].amount}}</td>
+                    <td>{{coffee[1].totalCal()}}</td>
                     <td><button @click="remItem(coffee[1].pId)">Remove</button></td>
                 </tr>
             </tbody>
@@ -60,6 +60,7 @@ export default {
             handler(){
                 this.coffeeItems.forEach((value)=>{
                 this.totalPrice += (value.price*value.amount);
+                    // this.totalPrice += value.totalCal();
                 })
             },
             deep:true,
