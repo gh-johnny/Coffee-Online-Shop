@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button @click="logout">Logout</button>
     <main-nav></main-nav>
     <router-view @shoppingCart="fromProuct" :cartAdd="ProductToCart"></router-view>
   </div>
@@ -27,7 +28,18 @@ export default {
       this.ProductToCart.set(val.pId,val)
       console.log(this.ProductToCart)
       console.log(this.DataFromProduct.totalCal())
+      console.log(this.DataFromProduct.eachPrice())
+    },
+    logedUser(val){
+      this.logeduser = val
+    },
+    logout(){
+      sessionStorage.removeItem("logeduser")
+      this.$router.push({name:'login-page'})
     }
+  },
+  mounted(){
+    console.log(sessionStorage["logeduser"])
   }
 }
 

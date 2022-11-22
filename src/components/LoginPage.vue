@@ -4,21 +4,20 @@
     <h1>
       Welcome
     </h1>
-    
-      <section>
+    <section>
+      <aside>
+        <label for="username">Username: </label>
+        <input v-model="uname" type="text" name="username" placeholder="Type your Username">
+      </aside>
 
-        <aside>
-          <label for="username">Username: </label>
-          <input v-model="uname" type="text" name="username" placeholder="Type your Username">
-        </aside>
+      <aside>
+        <label for="password">Password: </label>
+        <input v-model="pword" type="text" name="password" placeholder="Type your Password">
+      </aside>
 
-        <aside>
-          <label for="password">Password: </label>
-          <input v-model="pword" type="text" name="password" placeholder="Type your Password">
-        </aside>
-
-        <input type="button" value="Submit" @click="submit">
-      </section>
+      <input type="button" value="Submit" @click="submit">
+    </section>
+    <h2>{{message}}</h2>
   </form>
   </div>
   
@@ -26,6 +25,7 @@
 
 <script>
 import JsonService from '../services/JsonService.js';
+import { userClass } from '../classes/userClass.js';
 export default {
   name: 'loginPage',
   data(){
@@ -33,6 +33,8 @@ export default {
       uname:"",
       pword:"",
       userList:new Map(),
+      logedUser: null,
+      message: "",
     }
   },
   methods: {
@@ -51,10 +53,15 @@ export default {
     submit(){
         for(this.eachUser of this.userList){
           if(this.uname == this.eachUser[1].username && this.pword == this.eachUser[1].password){
-          this.$emit("userData", this.eachUser[1])
-        }
+            console.log(this.eachUser[1])
+            let logedUser = new userClass(this.eachUser[1].id, this.eachUser[1].first_name, this.eachUser[1].last_name, this.eachUser[1].username, this.eachUser[1].email)
+            logedUser.setSession()
+            this.$emit("userData", logedUser)
+            this.$router.push({name:'products-page'})
+          }else{
+            this.message = "Your Username or Password is wrong check again"
+          }
       }
-      
     }
     
     
