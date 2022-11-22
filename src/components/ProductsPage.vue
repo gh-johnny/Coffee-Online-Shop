@@ -2,7 +2,6 @@
     <div class="productPage">
         <div class="PageDetails">
             <h2>Products Page</h2>
-            <button @click="goCart">Go to Cart</button>
             <div class="coffeePage">
                 <div class="coffeeBox" v-for="(product,idx) in coffeeList" :key="idx">
                     <aside class="productImg">{{product[1].coffeeName}}</aside>
@@ -61,11 +60,6 @@ export default {
         cartAdding(val) {
             this.$emit('shoppingCart',val);
             console.log(val)
-        },
-        goCart(){
-            this.$router.push({
-                name:'cart-page'
-            })
         }
     },
     mounted(){
