@@ -10,7 +10,7 @@
                     <th>Coffee Type</th>
                     <th>Price</th>
                     <th>Amount</th>
-                    <th>Total Price</th>
+                    <th>Subtotal</th>
                     <th>Options</th>
                 </tr>
             </thead>
@@ -27,7 +27,7 @@
                 </tr>
             </tbody>
             <tfoot>
-                <!-- Total:{{this.total.toFixed(2)}} -->
+                Total:{{this.totalPrice.toFixed(2)}}
             </tfoot>
         </table>
         <button @click="goHome">Go Back</button>
@@ -39,12 +39,14 @@ export default {
     props:['cartList'],
     data(){
         return{
-            coffeeItems:this.cartList
+            coffeeItems:this.cartList,
+            totalPrice:0,
         }
     },
     methods:{
         remItem(pid){
             console.log(pid);
+            this.totalPrice = 0;
             this.$emit("remItem",pid);
         },
         goHome(){
@@ -53,9 +55,19 @@ export default {
             })
         }
     },
+    watch:{
+        coffeeItems:{
+            handler(){
+                this.coffeeItems.forEach((value)=>{
+                this.totalPrice += (value.price*value.amount);
+                })
+            },
+            deep:true,
+            immediate:true,
+        }
+    },
     mounted(){
-        // console.log("coffee");
-        // console.log(this.coffeeItems);
+
     }
 }
 </script>
