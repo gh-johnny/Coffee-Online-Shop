@@ -20,9 +20,9 @@
                     <td>{{coffee[1].bSize}}</td>
                     <td>{{coffee[1].bTemp}}</td>
                     <td>{{coffee[1].bType}}</td>
-                    <td>{{coffee[1].price}}</td>
+                    <td>{{coffee[1].eachPrice()}}</td>
                     <td>{{coffee[1].amount}}</td>
-                    <td>{{coffee[1].price * coffee[1].amount}}</td>
+                    <td>{{coffee[1].totalCal()}}</td>
                     <td><button @click="remItem(coffee[1].pId)">Remove</button></td>
                 </tr>
             </tbody>
@@ -30,6 +30,10 @@
                 Total:{{this.totalPrice.toFixed(2)}}
             </tfoot>
         </table>
+        <div>
+            <h2>Your order</h2>
+            
+        </div>
         <button @click="goHome">Go Back</button>
     </div>
 </template>
@@ -45,7 +49,7 @@ export default {
     },
     methods:{
         remItem(pid){
-            // console.log(pid);
+            console.log(pid);
             this.totalPrice = 0;
             this.$emit("remItem",pid);
         },
@@ -59,7 +63,8 @@ export default {
         coffeeItems:{
             handler(){
                 this.coffeeItems.forEach((value)=>{
-                this.totalPrice += (value.price*value.amount);
+                this.totalPrice += (value.eachPrice() * value.amount);
+                    // this.totalPrice += value.totalCal();
                 })
             },
             deep:true,
