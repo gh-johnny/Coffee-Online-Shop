@@ -19,10 +19,10 @@
         </ul>
         <article>
             <form v-if="sesssionCheck">
-                <button v-show="!user" @click="logout">Logout</button>
+                <button v-show="sesssionCheck" @click="logout">Logout</button>
             </form>
             <form v-else>
-                
+                <button v-show="user" @click="logout">Logout</button>
             </form>
             <figure><div>{{cartAdd.size}}</div></figure><!-- counter for shopping cart items...? -->
         </article>
