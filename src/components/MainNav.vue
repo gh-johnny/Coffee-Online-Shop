@@ -1,29 +1,42 @@
 <template>
     <nav>
         <aside>
-            <span>Welcome {{fullName}}!</span>
+            <span v-show="!sesssionCheck" >Welcome {{user2}}!</span>
+            <span v-show="sesssionCheck" >Welcome {{logFullname}}!</span>
         </aside>
-        <ul>
-            <li><router-link v-show="logflag" to='/login'>Login</router-link></li>
+        <ul v-if="sesssionCheck">
+            <li><router-link to='/home'>Home</router-link></li>
+            <li><router-link to='/products'>Products</router-link></li>
+            <li><router-link to='/recipe'>Recipes</router-link></li>
+            <li><router-link to='/shoppingcart'>Shopping Cart</router-link></li>
+        </ul>
+        <ul v-else>
+            <li><router-link v-show="!user" to='/login'>Login</router-link></li>
             <li><router-link to='/home'>Home</router-link></li>
             <li><router-link to='/products'>Products</router-link></li>
             <li><router-link to='/recipe'>Recipes</router-link></li>
             <li><router-link to='/shoppingcart'>Shopping Cart</router-link></li>
         </ul>
         <article>
-            <button @click="logout">Logout</button>
-            <figure><div>{{}}</div></figure><!-- counter for shopping cart items...? -->
+            <form v-if="sesssionCheck">
+                <button v-show="!user" @click="logout">Logout</button>
+            </form>
+            <form v-else>
+                
+            </form>
+            <figure><div>{{cartAdd.size}}</div></figure><!-- counter for shopping cart items...? -->
         </article>
     </nav>
 </template>
 <script>
 export default {
     name: 'MainNav',
+    props:['user',"user2",'cartAdd'],
     data(){
         return{
             logedUser:JSON.parse(sessionStorage.getItem('logeduser')),
-            fullName: "Nobody",
-            logflag:true
+            logFullname:'',
+            sesssionCheck:false
         }
     },
     methods:{    
@@ -32,17 +45,12 @@ export default {
             this.$router.push({name:'login-page'})
         },
     },
-    watch:{
-
-    },
     mounted(){
         if(sessionStorage.getItem('logeduser')){
-            this.fullName = this.logedUser.first_name+" "+this.logedUser.last_name;
-            this.memberstat = this.logedUser.membership;
-            this.mempoint = this.logedUser.point;
-            this.logflag = false
+            this.logFullname = this.logedUser.first_name+" "+this.logedUser.last_name;
+            this.sesssionCheck = true
         }
-    }
+    },
 }
 </script>
 <style scoped>
