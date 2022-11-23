@@ -58,13 +58,13 @@ export class productClass{
             }else if(this.bSize == "Very Large"){
                 bSizeFee = 2
             }
-        }else if(this.type == "Whole beans"){
+        }else if(this.type == 0){
             optionFee = 0;
-        }else if(this.type == "Gound"){
+        }else if(this.type == 1){
             optionFee = 1;
-        }else if(this.type == "Capsule"){
+        }else if(this.type == 3){
             optionFee = 3;
-        }else if(this.type == "Drip Package"){
+        }else if(this.type == 2){
             optionFee = 2;
         }
 
