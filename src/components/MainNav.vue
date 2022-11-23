@@ -42,6 +42,7 @@ export default {
     methods:{    
         logout(){
             sessionStorage.removeItem("logeduser")
+            localStorage. removeItem("myMap");
             this.$router.push({name:'login-page'})
         },
     },

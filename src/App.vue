@@ -7,6 +7,7 @@
 
 <script>
 import MainNav from './components/MainNav.vue'
+import { productClass } from './classes/productClass'
 
 export default {
   name: 'App',
@@ -15,20 +16,20 @@ export default {
   },
   data(){
     return{
+      cartSet: new Map(),
       ProductToCart: new Map(),
       DataFromProduct:'',
       user:'',
       userWelcome:false,
-      userWelcome2: null
+      userWelcome2: null,
+      logedUser:JSON.parse(sessionStorage.getItem('logeduser')),
     }
   },
   methods:{
     fromProuct(val){
       this.DataFromProduct = val
-      // console.log(this.DataFromProduct)
       this.ProductToCart.set(val.pId,val)
-      // console.log(this.ProductToCart)
-      // console.log(this.DataFromProduct.totalCal()) 
+      localStorage. setItem("myMap", JSON.stringify(Array.from(this.ProductToCart)))
     },
     userData(val){
       this.userWelcome = val
@@ -39,6 +40,22 @@ export default {
       console.log(this.userWelcome2)
     }
   },
+  mounted(){
+    if(localStorage.getItem('myMap')){
+      console.log(JSON.parse(localStorage. getItem("myMap")))
+      this.test2 = JSON.parse(localStorage. getItem("myMap"))
+      for (const key in this.test2) {
+        console.log(this.test2[key][1].pId)
+        let test = new productClass(this.test2[key][1].pId,this.test2[key][1].coffeeName,this.test2[key][1].price,this.test2[key][1].type,this.test2[key][1].bType,this.test2[key][1].bTemp,this.test2[key][1].bSize,this.test2[key][1].amount)
+        this.ProductToCart.set(test.pId,test)
+      }
+      console.log(this.ProductToCart)
+    }
+
+    if(!sessionStorage.getItem('logeduser')){
+      localStorage. removeItem("myMap");
+    }
+  }
 }
 </script> 
 <style>
