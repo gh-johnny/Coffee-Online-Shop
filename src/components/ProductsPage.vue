@@ -15,6 +15,7 @@
                     <article v-if="memberstat === false">
                         <h2>Welcome {{this.fullName}}</h2>
                         <h3 v-show="!memberstat">Membership : None</h3>
+                        <button @click="join()">Join the Membership</button>
                     </article>
                     <h2>Products Page</h2>
                     <div class="coffeePage">
@@ -88,6 +89,9 @@ export default {
                 name:'cart-page'
             })
         },
+        join(){
+            this.$router.push({name:'membership-cart'})
+        }
     },
     mounted(){
         this.loadJson();
