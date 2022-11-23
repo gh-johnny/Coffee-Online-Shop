@@ -68,7 +68,7 @@ export default {
             logedUser.setSession();
             if(logedUser.membership){
               let logeduser = logedUser.toObject();
-              logeduser.point = Math.floor(Math.random()*100000);
+              logeduser.point = Math.floor(Math.random()*1000);
               sessionStorage.setItem('logeduser',JSON.stringify(logeduser));
             }
             this.$emit("userData", logedUser)
