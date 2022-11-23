@@ -4,6 +4,8 @@ import HomePage from '../components/HomePage.vue'
 import ProductsPage from '../components/ProductsPage.vue'
 import RecipePage from '../components/RecipePage.vue'
 import ShoppingCart from '../components/CartPage.vue'
+import MemberShip from '../components/Mebership.vue'
+import FeedbackPage from '../components/FeedbackCompo.vue'
 const routes = [
     {
         path: '/',
@@ -30,6 +32,16 @@ const routes = [
         path: '/shoppingcart',
         name: 'shopping-cart', 
         component: ShoppingCart 
+    },
+    {
+        path: '/membership',
+        name: 'membership-cart', 
+        component: MemberShip 
+    },
+    {
+        path: '/feedback',
+        name: 'feedbacj-page', 
+        component: FeedbackPage 
     },
 ];
 const router = createRouter({

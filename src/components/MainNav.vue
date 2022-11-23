@@ -1,10 +1,10 @@
 <template>
     <nav>
         <aside>
-            <span>Welcome {{}}!</span>
+            <span>Welcome {{fullName}}!</span>
         </aside>
         <ul>
-            <li><router-link to='/login'>Login</router-link></li>
+            <li><router-link v-show="logflag" to='/login'>Login</router-link></li>
             <li><router-link to='/home'>Home</router-link></li>
             <li><router-link to='/products'>Products</router-link></li>
             <li><router-link to='/recipe'>Recipes</router-link></li>
@@ -19,22 +19,30 @@
 <script>
 export default {
     name: 'MainNav',
-    props:['userWelcome'],
     data(){
         return{
-            
+            logedUser:JSON.parse(sessionStorage.getItem('logeduser')),
+            fullName: "Nobody",
+            logflag:true
         }
     },
-    methods:{
-        logedUser(val){
-            this.logeduser = val
-
-        },      
+    methods:{    
         logout(){
             sessionStorage.removeItem("logeduser")
             this.$router.push({name:'login-page'})
         },
     },
+    watch:{
+
+    },
+    mounted(){
+        if(sessionStorage.getItem('logeduser')){
+            this.fullName = this.logedUser.first_name+" "+this.logedUser.last_name;
+            this.memberstat = this.logedUser.membership;
+            this.mempoint = this.logedUser.point;
+            this.logflag = false
+        }
+    }
 }
 </script>
 <style scoped>
