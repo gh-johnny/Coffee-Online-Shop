@@ -28,11 +28,7 @@ export default {
         }
     },
     mounted(){
-        // this.logedUser.point = 100;
-        // console.log(this.logedUser);
-
-        // console.log("hi luke");
-        // console.log(this.cartList);
+   
     }
 }
 </script>

@@ -42,13 +42,14 @@
                         <p><span>{{coffee[1].coffeeName}}</span> x {{coffee[1].amount}} Glass</p><p>Type: {{coffee[1].bTemp}} {{coffee[1].bType}}</p><p>Size: {{coffee[1].bSize}}</p>
                     </li>
                 </ul>
-                <h3>SubTotal: price - discount + tax</h3>
+                <h3>SubTotal: {{this.subTotal.toFixed(2)}}<small>({{this.totalPrice.toFixed(2)}}(price) - {{this.discountPrice.toFixed(2)}}(discount) + {{this.tax.toFixed(2)}}(tax))</small></h3>
                 <div>
                     <input v-model="mPoint" type="number" placeholder="Put in the point">
                     <button @click="usePoint" type="button">Use point</button>
                     <p>Available Point: {{this.logedUser.point}} - {{this.mPoint}}</p>
                 </div>
-                <h2>Total:{{this.tmpPrice.toFixed(2)}}<small>({{this.totalPrice.toFixed(2)}}-{{this.mPoint}}Point)</small></h2>
+                <h2>Total:{{this.tmpPrice.toFixed(2)}}<small>({{this.subTotal.toFixed(2)}}-{{this.mPoint}}Point)</small></h2>
+                <small>Reward Point: {{this.addPoint}}</small>
             </section>
             <section>
                 <h3>Shipping Info</h3>
@@ -77,11 +78,14 @@ export default {
             subTotal:0,
             totalPrice:0,
             tmpPrice:0,
+            tax:0,
+            discountPrice:0,
             mPoint:0,
             logedUser:'',
             pointFlag:true,
             totalPoint:0,
             tmpPoint:0,
+            addPoint:0,
             shipAddr:'',
             shipTel:'',
             cardNum:'',
@@ -94,6 +98,7 @@ export default {
         remItem(pid){
             console.log(pid);
             this.totalPrice = 0;
+            this.discountPrice = 0;
             this.$emit("remItem",pid);
         },
         goHome(){
@@ -103,7 +108,7 @@ export default {
         },
         usePoint(){
             this.totalPoint = this.logedUser.point;
-            this.tmpPrice = this.totalPrice;
+            this.tmpPrice = this.subTotal;
             if(this.mPoint < this.totalPoint && 0 < (this.tmpPrice - this.mPoint) ){
                 this.tmpPrice -= this.mPoint;
             }else{
@@ -118,6 +123,7 @@ export default {
             this.cardCvc='';
             this.chBox = false;
             this.logedUser.point -= this.mPoint;
+            this.logedUser.point += this.addPoint;
             this.mPoint = 0;
             sessionStorage.setItem('logeduser',JSON.stringify(this.logedUser));
         }
@@ -125,9 +131,15 @@ export default {
     watch:{
         coffeeItems:{
             handler(){
+                this.addPoint = 0;
                 this.coffeeItems.forEach((value)=>{
-                this.totalPrice += (value.eachPrice() * value.amount);
+                    this.totalPrice += (value.eachPrice() * value.amount);
+                    this.discountPrice += parseFloat(value.discount());
                 })
+                this.tax = (this.totalPrice - this.discountPrice)*0.05;
+                this.tmpPrice = this.totalPrice - this.discountPrice + this.tax;
+                this.subTotal = this.totalPrice - this.discountPrice + this.tax;
+                this.addPoint = parseInt(this.tmpPrice * 0.05);
             },
             deep:true,
             immediate:true,
