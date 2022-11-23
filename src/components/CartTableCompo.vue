@@ -16,7 +16,6 @@
             </thead>
             <tbody>
                 <tr v-for="(coffee,idx) in coffeeItems" :key="idx">
-                    <!-- <h3>hello</h3> -->
                     <td scope="row">{{coffee[1].coffeeName}}</td>
                     <td v-if="coffee[1].bSize !== ''">{{coffee[1].bSize}}</td>
                     <td v-if="coffee[1].bSize === ''">-</td>
@@ -43,20 +42,30 @@
                         <p><span>{{coffee[1].coffeeName}}</span> x {{coffee[1].amount}} Glass</p><p>Type: {{coffee[1].bTemp}} {{coffee[1].bType}}</p><p>Size: {{coffee[1].bSize}}</p>
                     </li>
                 </ul>
-                <h3>SubTotal: price - discount + tax</h3>
-                <h2>Total:{{this.totalPrice.toFixed(2)}}</h2>
+                <h3>SubTotal: {{this.subTotal.toFixed(2)}}<small>({{this.totalPrice.toFixed(2)}}(price) - {{this.discountPrice.toFixed(2)}}(discount) + {{this.tax.toFixed(2)}}(tax))</small></h3>
+                <div>
+                    <input v-model="mPoint" type="number" placeholder="Put in the point">
+                    <button @click="usePoint" type="button">Use point</button>
+                    <p>Available Point: {{this.logedUser.point}} - {{this.mPoint}}</p>
+                </div>
+                <h2>Total:{{this.tmpPrice.toFixed(2)}}<small>({{this.subTotal.toFixed(2)}}-{{this.mPoint}}Point)</small></h2>
+                <small>Reward Point: {{this.addPoint}}</small>
             </section>
             <section>
                 <h3>Shipping Info</h3>
-                <form>
-                    <label>Address: <input v-model="shipAddr" type="text" required></label>
-                    <label>Phone: <input v-model="shipTel" type="tel" required></label>
-                    <label>Card Information </label>
-                    <input type="text">
+                <form onsubmit="return false;">
+                    <label>Address: <input v-model="shipAddr" type="text" placeholder="Write address" required></label>
+                    <label>Phone: <input v-model="shipTel" type="tel" placeholder="Write phone number" required></label>
+                    <hr>
+                    <label>[Card Information]</label>
+                    <p>Card number: <input v-model="cardNum" type="text" placeholder="**** **** **** ****" required></p>
+                    <p>Expiry(MM/YY): <input v-model="cardExp" type="text" placeholder="MM/YY" required></p>
+                    <p>Card code: <input v-model="cardCvc" type="text" placeholder="cvc" required></p>
+                    <p><input v-model="chBox" type="checkbox" required> Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our "Privacy policy" and "terms and conditions".</p>
+                    <button @click="orderFunc" type="submit">Place order</button>
                 </form>
             </section>
         </article>
-        <!-- <button @click="goHome">Go Back</button> -->
     </div>
 </template>
 <script>
@@ -66,35 +75,79 @@ export default {
     data(){
         return{
             coffeeItems:this.cartList,
+            subTotal:0,
             totalPrice:0,
+            tmpPrice:0,
+            tax:0,
+            discountPrice:0,
+            mPoint:0,
+            logedUser:'',
+            pointFlag:true,
+            totalPoint:0,
+            tmpPoint:0,
+            addPoint:0,
+            shipAddr:'',
+            shipTel:'',
+            cardNum:'',
+            cardExp:'',
+            cardCvc:'',
+            chBox:false,
         }
     },
     methods:{
         remItem(pid){
             console.log(pid);
             this.totalPrice = 0;
+            this.discountPrice = 0;
             this.$emit("remItem",pid);
         },
         goHome(){
             this.$router.push({
                 name:'products-page'
             })
+        },
+        usePoint(){
+            this.totalPoint = this.logedUser.point;
+            this.tmpPrice = this.subTotal;
+            if(this.mPoint < this.totalPoint && 0 < (this.tmpPrice - this.mPoint) ){
+                this.tmpPrice -= this.mPoint;
+            }else{
+                alert("Check the available point");
+            }
+        },
+        orderFunc(){
+            this.shipAddr='';
+            this.shipTel='';
+            this.cardNum='';
+            this.cardExp='';
+            this.cardCvc='';
+            this.chBox = false;
+            this.logedUser.point -= this.mPoint;
+            this.logedUser.point += this.addPoint;
+            this.mPoint = 0;
+            sessionStorage.setItem('logeduser',JSON.stringify(this.logedUser));
         }
     },
     watch:{
         coffeeItems:{
             handler(){
+                this.addPoint = 0;
                 this.coffeeItems.forEach((value)=>{
-                this.totalPrice += (value.eachPrice() * value.amount);
-                    // this.totalPrice += value.totalCal();
+                    this.totalPrice += (value.eachPrice() * value.amount);
+                    this.discountPrice += parseFloat(value.discount());
                 })
+                this.tax = (this.totalPrice - this.discountPrice)*0.05;
+                this.tmpPrice = this.totalPrice - this.discountPrice + this.tax;
+                this.subTotal = this.totalPrice - this.discountPrice + this.tax;
+                this.addPoint = parseInt(this.tmpPrice * 0.05);
             },
             deep:true,
             immediate:true,
-        }
+        },
     },
     mounted(){
-        // console.log(this.coffeeItems);
+        this.logedUser = JSON.parse(sessionStorage.getItem('logeduser'));
+
     }
 }
 </script>
