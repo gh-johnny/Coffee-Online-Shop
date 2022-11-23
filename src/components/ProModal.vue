@@ -18,30 +18,6 @@
                     Price : $ {{newPrice}} / <small>100g</small>
                   </h3>
                   <div class="modal_main">
-                    <div v-show="!flag" class="left">
-                      <!-- <h5>Disciptions</h5>
-                      <p>If you purchage more than 500g you get 5% discount <br/>/ more than 1kg 10% discount</p>
-                      <p>Coffee beans Type.
-                          <br/>i.	Whole bean (no extra charge).
-                          <br/>ii.	powder ($0.5 extra charge per 100g).
-                          <br/>iii.	capsule ($2 extra charge per 100g).
-                          <br/>iv.	Drip Package ($1 extra charge per 100g).
-                          <br/>v.	Beverage (condition)
-                      </p> -->
-                    </div>
-                    <div v-show="flag" class="left">
-                      <!-- <h5>Disciptions</h5>
-                      <p>If you choose beverage type here are your options</p>
-                      <p>Coffee Type.
-                          <br/>Esspresso
-                          <br/>Americano
-                          <br/>Black
-                          <br/>Latte
-                          <br/>Caramel Latte
-                          <br/>Caramel Moch
-                      </p>
-                      <h5>Pick UP only</h5> -->
-                    </div>
                     <div class="right">
                       <div>
                         <span>Type: </span>
@@ -103,17 +79,20 @@ export default {
           bTemp:"",
           bSize:"",
           flag:false,
-          total:0,
           newPrice : this.CoffeeOptions.price
       }
   },
   methods: {
+      //closing the modal and set the valu again
       close() {
-        this.total = 0
         this.amount=1;
         this.selectedOption = "no"
         this.$emit('close');
+        this.newPrice = null
+        this.amount=1;
       },
+
+      // adding select product to cart
       addTocart(){
         if(this.selectedOption =="no"){
           alert("You have to choose all the options")
@@ -122,21 +101,19 @@ export default {
             alert("You have to choose all the options")
           }else{
             let addCart = new productClass(this.CoffeeOptions.pId,this.CoffeeOptions.coffeeName,this.CoffeeOptions.price,this.selectedOption,this.bType,this.bTemp,this.bSize,this.amount)
-            this.total = 0
+            this.newPrice = 0
             this.amount=1;
             this.selectedOption = "no"
             this.flag = false
-            // console.log(addCart)
             this.$emit('close');
             this.$emit('cartAdding',addCart);
           }
         }else{
           let addCart = new productClass(this.CoffeeOptions.pId,this.CoffeeOptions.coffeeName,this.CoffeeOptions.price,this.selectedOption,this.bType,this.bTemp,this.bSize,this.amount)
-          this.total = 0
+          this.newPrice = 0
           this.amount=1;
           this.selectedOption = "no"
           this.flag = false
-          // console.log(addCart)
           this.$emit('close');
           this.$emit('cartAdding',addCart);
         }
@@ -144,12 +121,13 @@ export default {
       loadJson(){
           readJson.getJson("option")
           .then(res=>{
-              // console.log(res.data)
               this.options = res.data
           }).catch(err=>{console.log(err)})
       },
+
+      //check the price is changing according to the option selection
       totalCh(){
-        let price = this.totalAll();
+        let price = this.eachprice();
         let bTypeFee = 0
         let bSizeFee = 0
 
@@ -183,11 +161,10 @@ export default {
           this.flag = false
           this.optionFee = this.selectedOption;
         }
-        let price2 = ((price + this.optionFee + bTypeFee + bSizeFee) * this.amount).toFixed(2);
-        this.newPrice = price + this.optionFee + bTypeFee + bSizeFee
-        this.total = price2;
+        this.newPrice = (price + this.optionFee + bTypeFee + bSizeFee).toFixed(2)
+
       },
-      totalAll(){
+      eachprice(){
           let cal = 0;
           cal = this.CoffeeOptions.price
           return cal
