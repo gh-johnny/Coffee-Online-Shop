@@ -1,7 +1,7 @@
 <template>
   <div>
-    <main-nav :userWelcome='userWelcome'></main-nav>
-     <router-view @shoppingCart="fromProuct" :cartAdd="ProductToCart" @userData='userData'></router-view>
+    <main-nav :user='userWelcome' :user2='userWelcome2' :cartAdd="ProductToCart"></main-nav>
+    <router-view @shoppingCart="fromProuct" :cartAdd="ProductToCart" @userData='userData' @userData2='userData2'></router-view>
   </div>
 </template>
 
@@ -17,6 +17,9 @@ export default {
     return{
       ProductToCart: new Map(),
       DataFromProduct:'',
+      user:'',
+      userWelcome:false,
+      userWelcome2: null
     }
   },
   methods:{
@@ -27,11 +30,13 @@ export default {
       // console.log(this.ProductToCart)
       // console.log(this.DataFromProduct.totalCal()) 
     },
-    logedUser(val){
-      this.logeduser = val
-    },
     userData(val){
       this.userWelcome = val
+      console.log(this.userWelcome)
+    },
+    userData2(val){
+      this.userWelcome2 = val.first_name+" "+val.last_name
+      console.log(this.userWelcome2)
     }
   },
 }

@@ -12,7 +12,6 @@
     </h1>
     
       <section>
-
         <aside>
           <label for="username">Username: </label>
           <input v-model="uname" type="text" name="username" placeholder="Type your Username">
@@ -22,7 +21,6 @@
           <label for="password">Password: </label>
           <input v-model="pword" type="text" name="password" placeholder="Type your Password">
         </aside>
-
         <input type="button" value="Submit" @click="submit">
       </section>
       <!-- <h2>{{message}}</h2> -->
@@ -71,7 +69,8 @@ export default {
               logeduser.point = Math.floor(Math.random()*100000);
               sessionStorage.setItem('logeduser',JSON.stringify(logeduser));
             }
-            this.$emit("userData", logedUser)
+            this.$emit("userData", true)
+            this.$emit("userData2", logedUser)
             this.$router.push({name:'products-page'});
           }else{
             this.message = "Your Username or Password is wrong check again"
