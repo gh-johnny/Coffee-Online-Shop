@@ -1,24 +1,34 @@
+
 <template>
   <div>
+    <div class="left-side">
+      <figure class="left-video"><video src="../../public/video/Home-video.mp4" autoplay loop></video></figure>
+    </div>
+    <div class="content">
+      <div class="right-side">
     <form>
     <h1>
       Welcome
     </h1>
-    <section>
-      <aside>
-        <label for="username">Username: </label>
-        <input v-model="uname" type="text" name="username" placeholder="Type your Username">
-      </aside>
+    
+      <section>
 
-      <aside>
-        <label for="password">Password: </label>
-        <input v-model="pword" type="text" name="password" placeholder="Type your Password">
-      </aside>
+        <aside>
+          <label for="username">Username: </label>
+          <input v-model="uname" type="text" name="username" placeholder="Type your Username">
+        </aside>
 
-      <input type="button" value="Submit" @click="submit">
-    </section>
-    <h2>{{message}}</h2>
-  </form>
+        <aside>
+          <label for="password">Password: </label>
+          <input v-model="pword" type="text" name="password" placeholder="Type your Password">
+        </aside>
+
+        <input type="button" value="Submit" @click="submit">
+      </section>
+      <!-- <h2>{{message}}</h2> -->
+    </form>
+    </div>
+      </div>
   </div>
   
 </template>
