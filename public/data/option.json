@@ -1,0 +1,8 @@
+[
+    {"type":"Whole beans","fee":0},
+    {"type":"Gound","fee":1},
+    {"type":"Capsule","fee":3},
+    {"type":"Drip Package","fee":2},
+    {"type":"Beverage","fee":"Beverage"}
+]
+    
